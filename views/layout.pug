@@ -1,0 +1,35 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="utf-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
+        meta(http-equiv="x-ua-compatible" content="ie=edge")
+        title= title
+
+        block styles
+        // Font-Awesome
+        link(href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" )
+        // Bootstrap 
+        link(href="/static/css/bootstrap.min.css" rel="stylesheet")
+        // MDB 
+        link(href="/static/css/mdb.min.css" rel="stylesheet")
+        // Custom Styles
+        link(link href="/static/css/style.css" rel="stylesheet")
+
+    body
+        block navbar
+        include includes/navbar.pug
+
+        .container
+            // content
+            block content
+
+    block scripts
+    // JQuery
+    script(type="text/javascript" src="/static/js/jquery-3.2.1.min.js")
+    // Bootstrap tooltips
+    script(type="text/javascript" src="/static/js/popper.min.js")
+    // Bootstrap core JavaScript
+    script(type="text/javascript" src="/static/js/bootstrap.js")
+    // MDB core JavaScript
+    script(type="text/javascript" src="/static/js/mdb.min.js")

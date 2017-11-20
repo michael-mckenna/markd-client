@@ -1,0 +1,28 @@
+extends ../layout.pug
+
+block append content
+    h1(class="display-5 text-center") Signup 
+    br
+
+    form(action="/signup" method="post")
+        .text-center
+            br
+            .md-form
+                input(type="text" name="name" class="form-control" required)
+                label(for="email") Enter your name
+
+            br
+            .md-form
+                input(type="email" name="email" class="form-control validate" required)
+                label(for="email" data-error="Invalid email") Enter your email
+            
+            br
+            .md-form
+                input(type="password" name="password" class="form-control" required)
+                label(for="password") Enter your password
+            
+            br
+            .md-form
+                button(type="submit" class="btn btn-default") Sign Up 
+            
+            a(href="/login") Log in here!

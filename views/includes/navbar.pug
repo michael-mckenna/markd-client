@@ -1,0 +1,29 @@
+// Navbar
+nav(class="navbar navbar-expand-lg navbar-light white")
+
+    a(class="navbar-brand") Navbar
+
+    // Collapse Button
+    button(
+        class="navbar-toggler" 
+        type="button" data-toggle="collapse" 
+        data-target="#navbarSupportedContent" 
+        aria-controls="navbarSupportedContent" 
+        aria-expanded="false" 
+        aria-label="Toggle navigation"
+    )
+        span(class="navbar-toggler-icon")
+
+    // Collapsible content
+    div(class="collapse navbar-collapse" id="navbarSupportedContent")
+        // Links
+        ul(class="navbar-nav")
+            block navlinks
+            li(class="nav-item")
+                a(class="nav-link" href="#") Home 
+            li(class="nav-item")
+                a(class="nav-link" href="#") Features
+            li(class="nav-item")
+                a(class="nav-link" href="#") Pricing
+
+br
