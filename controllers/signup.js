@@ -1,14 +1,17 @@
 const express = require('express')
   , axios = require('axios')
 
-const signup = express.Router();
+const config = require('./../config').setup(process.env.NODE_ENV)
+
+const signup = express.Router()
 
 /**
  * GET signup 
  */
 signup.get('/signup', (req, res) => {
-  res.render('auth/signup', { title: 'Signup' });
-});
+  req.flash('info', 'hello')
+  res.render('auth/signup', { title: 'Signup' })
+})
 
 /**
  * POST signup
@@ -18,7 +21,7 @@ signup.post('/signup', (req, res) => {
     res.send('Could not save new user.')
   }
 
-  axios.post('http://localhost:5000/auth/signup', {
+  axios.post(config.serverURL + '/auth/signup', {
     name: req.body.name,
     email: req.body.email,
     password: req.body.password
@@ -29,7 +32,7 @@ signup.post('/signup', (req, res) => {
   .catch(function (error) {
     return res.send(error)
   })
-});
+})
 
 module.exports = {
   signup

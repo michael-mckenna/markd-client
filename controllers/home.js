@@ -7,28 +7,15 @@ const home = express.Router();
  * GET home page
  */
 home.get('/home', (req, res) => {
-  if (!req.session.id) {
+  if (!req.session.token) {
     var err = new Error('User not logged in.')
     err.status = 401
     return res.send(JSON.stringify(err, undefined, 2))
   }
 
-  /*
-    User.findOne({ _id: req.session.userId })
-        .exec((err, user) => {
-            if (err) res.send(JSON.stringify(err, undefined, 2))
-
-            if (user === null) {
-                var err = new Error('User not found.')
-                err.status = 401
-                return res.send(JSON.stringify(err, undefined, 2))
-            }
-
-            return res.render('home/index', { title: `Hi, ${user.name}!` });
-        })
-        */
-
+  return res.render('home/index', { title: `Hi, ${req.session.name}!` });
 });
+
 
 module.exports = {
   home
