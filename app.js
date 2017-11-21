@@ -9,6 +9,9 @@ const { home } = require('./controllers/home')
   , { login } = require('./controllers/login')
   , { signup } = require('./controllers/signup')
 
+// setup configuration
+const config = require('./config').setup(process.env.NODE_ENV)
+
 // initialize app
 var app = express();
 
@@ -23,11 +26,7 @@ app.use('/static', express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use(session({
-  secret: '7670df08880cbeba1451d5a888ba26ee1f542a1f1a0ddb01',
-  resave: true,
-  saveUninitialized: false
-}));
+app.use(session(config.session))
 
 // register routes
 app.use('/', home);
@@ -35,8 +34,12 @@ app.use('/', login);
 app.use('/', signup);
 
 // run server
-app.set('port', process.env.PORT || 3000);
+app.set('port', config.port);
 
 var server = app.listen(app.get('port'), () => {
-  console.log('Markd is up on port 5000!');
+  console.log('Markd is up on port ' + config.port);
 });
+
+module.exports = {
+  config
+}
