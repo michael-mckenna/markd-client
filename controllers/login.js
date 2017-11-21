@@ -29,17 +29,16 @@ login.post('/login', (req, res) => {
     password: req.body.password
   })
   .then(function (result) {
-    const data = result.data
-
-    if (data['status'] === 'failure') {
+    if (result.data['status'] === 'failure') {
       return res.send('failure')
     }
 
-    req.session.email = data['email']
-    req.session.name = data['name'] 
-    req.session.token = data['token']
+    req.session.email = result.data['email']
+    req.session.name = result.data['name'] 
+    req.session.token = result.data['token']
 
-    return res.send(data)
+    req.flash('success', 'Welcome, ' + req.session.name)
+    return res.redirect('/home')
   })
   .catch(function (error) {
     return res.send(error)

@@ -9,7 +9,6 @@ const signup = express.Router()
  * GET signup 
  */
 signup.get('/signup', (req, res) => {
-  req.flash('info', 'hello')
   res.render('auth/signup', { title: 'Signup' })
 })
 
@@ -27,8 +26,20 @@ signup.post('/signup', (req, res) => {
     password: req.body.password
   })
   .then(function (result) {
-    return res.send(result.data)
+    if (result.data['status'] === undefined) {
+      req.flash('error', 'Invalid Request to Sign up')
+      return res.redirect('/signup')
+    }
+
+    if (result.data['status'] === 'failure') {
+      req.flash('error', result.data['message'])
+      return res.redirect('/signup')
+    }
+
+    req.flash('success', result.data['message'])
+    return res.redirect('/login')
   })
+
   .catch(function (error) {
     return res.send(error)
   })
