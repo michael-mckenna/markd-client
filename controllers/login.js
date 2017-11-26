@@ -21,7 +21,8 @@ login.get('/login', (req, res) => {
  */
 login.post('/login', (req, res) => {
   if (!req.body.email || !req.body.password) {
-    res.send('Could not login user.')
+    req.flash('error', 'Invalid Input Provided.  Please Try Again.')
+    return res.redirect('/login')
   }
 
   axios.post(config.serverURL + '/auth/login', {
@@ -29,8 +30,14 @@ login.post('/login', (req, res) => {
     password: req.body.password
   })
   .then(function (result) {
+    if (!result.data['status']) {
+      req.flash('error', 'Invalid Request to Sign up')
+      return res.redirect('/signup')
+    }
+
     if (result.data['status'] === 'failure') {
-      return res.send('failure')
+      req.flash('error', result.data['message'])
+      return res.redirect('/login')
     }
 
     req.session.email = result.data['email']
@@ -38,7 +45,7 @@ login.post('/login', (req, res) => {
     req.session.token = result.data['token']
 
     req.flash('success', 'Welcome, ' + req.session.name)
-    return res.redirect('/home')
+    return res.redirect('/marks')
   })
   .catch(function (error) {
     return res.send(error)

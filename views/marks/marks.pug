@@ -1,0 +1,82 @@
+extends ../layout.pug
+
+block append content
+    h1(class="text-center" style="font-weight: 250") My Marks 
+    br
+
+    if bookmarks.length > 0
+        div(class="card-deck")
+            each bookmark in bookmarks
+                div(class="card card-cascade narrower text-center")
+                    div(class="card-body")
+                        h4(class="card-title" style="font-weight: 100")= bookmark.name
+                        p(class="card-text")
+
+                        a(href="//" + bookmark.url)
+                            img(src="//" + bookmark.url + "/favicon.ico" width="30px" height="30px")
+
+                        br
+                        each tag in bookmark.tags
+                            span(class="badge badge-pill indigo")
+                                a(href="#")= tag
+    else
+        h3(class="text-center") No Bookmarks Found :(
+
+    // New Mark Modal
+    div(class="modal fade" id="modalAddMark" tabindex="-1" role="dialog" aria-hidden="true")
+        div(class="modal-dialog" role="document")
+            div(class="modal-content")
+                div(div class="modal-header text-center")
+                    h4(class="modal-title w-100 font-bold" style="font-weight: 300") Add Bookmark
+
+                form(action="/marks" method="post")
+                    div(class="modal-body mx-3")
+                        div(class="md-form")
+                            input(type="text" id="newMarkUrl" class="form-control" required)
+                            label(for="newMarkUrl") URL
+
+                        div(class="md-form")
+                            input(type="text" id="newMarkName" class="form-control")
+                            label(for="newMarkName") Name
+
+                        div(class="chips chips-placeholder")
+
+                    div(class="modal-footer d-flex justify-content-center")
+                        button(type="submit" class="btn btn-indigo" onclick="addMark()") Save
+
+    div(class="fixed-action-btn" style="bottom: 45px; right: 24px;")
+        a(class="btn-floating btn-lg red" onclick="toggleAddMarkModal()")
+            i(class="fa fa-plus")
+
+block append js
+    script.
+        var toggleAddMarkModal = function() {
+            $('#modalAddMark').modal()
+        }
+
+        $('.chips-placeholder').material_chip({
+            placeholder: 'Enter a tag',
+            secondaryPlaceholder: '+Tag',
+        })
+
+        var addMark = function() {
+            var url = document.getElementById('newMarkUrl').value
+            var name = document.getElementById('newMarkName').value
+
+            if (name === "") name = url
+
+            var chipData = $('.chips-placeholder').material_chip('data')
+
+            var tags = []
+            for (var i = 0; i < chipData.length; i++) {
+                tags.push(chipData[i].tag)
+            }
+
+            var bookmark = {
+                url,
+                name,
+                tags
+            }
+
+            console.log(bookmark)
+        }

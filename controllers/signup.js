@@ -17,7 +17,8 @@ signup.get('/signup', (req, res) => {
  */
 signup.post('/signup', (req, res) => {
   if (!req.body.name || !req.body.email || !req.body.password) {
-    res.send('Could not save new user.')
+    req.flash('error', 'Invalid Input Provided.  Please Try Again.')
+    return res.redirect('/signup')
   }
 
   axios.post(config.serverURL + '/auth/signup', {
@@ -25,18 +26,18 @@ signup.post('/signup', (req, res) => {
     email: req.body.email,
     password: req.body.password
   })
-  .then(function (result) {
-    if (result.data['status'] === undefined) {
+  .then(function (response) {
+    if (!response.data['status']) {
       req.flash('error', 'Invalid Request to Sign up')
       return res.redirect('/signup')
     }
 
-    if (result.data['status'] === 'failure') {
-      req.flash('error', result.data['message'])
+    if (response.data['status'] === 'failure') {
+      req.flash('error', response.data['message'])
       return res.redirect('/signup')
     }
 
-    req.flash('success', result.data['message'])
+    req.flash('success', response.data['message'])
     return res.redirect('/login')
   })
 

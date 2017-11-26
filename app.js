@@ -9,6 +9,7 @@ const fs = require('fs')
 const { home } = require('./controllers/home')
   , { login } = require('./controllers/login')
   , { signup } = require('./controllers/signup')
+  , { marks } = require('./controllers/marks')
 
 // setup configuration
 var config = require('./config').setup(process.env.NODE_ENV)
@@ -34,6 +35,7 @@ app.use(require('flash')())
 app.use('/', home)
 app.use('/', login)
 app.use('/', signup)
+app.use('/marks', marks)
 
 // run server
 app.set('port', config.port)
