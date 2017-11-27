@@ -15,7 +15,7 @@ marks.get('/', (req, res) => {
         return res.redirect('/login')
     }
 
-    axios.post(config.serverURL + '/get/all', {
+    axios.post(config.serverURL + '/read/all', {
         email: req.session.email,
         token: req.session.token
     })
