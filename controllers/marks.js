@@ -44,7 +44,27 @@ marks.post('/', (req, res) => {
         return res.redirect('/login')
     }
 
-    console.log(JSON.stringify(req.body, undefined, 2))
+    bookmark = req.body
+    axios.post(config.serverURL + "/create", {
+        email: req.session.email, 
+        token: req.session.token, 
+        url: bookmark['url'],
+        name: bookmark['name'],
+        tags: bookmark['tags[]']
+    })
+    .then(function (result) {
+        if (result.data['status'] !== 'success') {
+            req.flash('error', result.data['message'])
+            return res.redirect('/')
+        }
+
+        req.flash('success', 'Added bookmark')
+        return res.redirect('/marks')
+    })
+    .catch(function (error) {
+        req.flash('error', error)
+        return res.redirect('/marks')
+    })
 
     return res.redirect('/marks')
 })

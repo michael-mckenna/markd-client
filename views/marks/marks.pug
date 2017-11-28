@@ -6,19 +6,20 @@ block append content
 
     if bookmarks.length > 0
         div(class="card-deck")
-            each bookmark in bookmarks
-                div(class="card card-cascade narrower text-center")
-                    div(class="card-body")
-                        h4(class="card-title" style="font-weight: 100")= bookmark.name
-                        p(class="card-text")
+            each bookmark, index in bookmarks
+                div(class="col-sm-4")
+                    div(class="card card-cascade narrower text-center")
+                        div(class="card-body")
+                            h4(class="card-title" style="font-weight: 100")= bookmark.name
+                            p(class="card-text")
 
-                        a(href="//" + bookmark.url)
-                            img(src="//" + bookmark.url + "/favicon.ico" width="30px" height="30px")
+                            a(href="//" + bookmark.url)
+                                img(src="//" + bookmark.url + "/favicon.ico" width="30px" height="30px")
 
-                        br
-                        each tag in bookmark.tags
-                            span(class="badge badge-pill indigo")
-                                a(href="#")= tag
+                            br
+                            each tag in bookmark.tags
+                                span(class="badge badge-pill indigo")
+                                    a(href="#")= tag
     else
         h3(class="text-center") No Bookmarks Found :(
 
@@ -29,20 +30,19 @@ block append content
                 div(div class="modal-header text-center")
                     h4(class="modal-title w-100 font-bold" style="font-weight: 300") Add Bookmark
 
-                form(action="/marks" method="post")
-                    div(class="modal-body mx-3")
-                        div(class="md-form")
-                            input(type="text" id="newMarkUrl" class="form-control" required)
-                            label(for="newMarkUrl") URL
+                div(class="modal-body mx-3")
+                    div(class="md-form")
+                        input(type="text" id="newMarkUrl" class="form-control" required)
+                        label(for="newMarkUrl") URL
 
-                        div(class="md-form")
-                            input(type="text" id="newMarkName" class="form-control")
-                            label(for="newMarkName") Name
+                    div(class="md-form")
+                        input(type="text" id="newMarkName" class="form-control")
+                        label(for="newMarkName") Name
 
-                        div(class="chips chips-placeholder")
+                    div(class="chips chips-placeholder")
 
-                    div(class="modal-footer d-flex justify-content-center")
-                        button(type="submit" class="btn btn-indigo" onclick="addMark()") Save
+                div(class="modal-footer d-flex justify-content-center")
+                    button(class="btn btn-indigo" onclick="addMark()") Save
 
     div(class="fixed-action-btn" style="bottom: 45px; right: 24px;")
         a(class="btn-floating btn-lg red" onclick="toggleAddMarkModal()")
@@ -72,11 +72,17 @@ block append js
                 tags.push(chipData[i].tag)
             }
 
-            var bookmark = {
-                url,
-                name,
-                tags
-            }
+            tags.push('boundary')
+            tags.push('header')
 
-            console.log(bookmark)
+            console.log('Sending: ', url, name, tags)
+
+            $.post("/marks", {
+                url: url,
+                name: name,
+                tags: tags
+             })
+
+            $('#modalAddMark').modal('hide')
+            document.location.href = '/marks'
         }
