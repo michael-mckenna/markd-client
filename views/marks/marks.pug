@@ -29,20 +29,19 @@ block append content
                 div(div class="modal-header text-center")
                     h4(class="modal-title w-100 font-bold" style="font-weight: 300") Add Bookmark
 
-                form(action="/marks" method="post")
-                    div(class="modal-body mx-3")
-                        div(class="md-form")
-                            input(type="text" id="newMarkUrl" class="form-control" required)
-                            label(for="newMarkUrl") URL
+                div(class="modal-body mx-3")
+                    div(class="md-form")
+                        input(type="text" id="newMarkUrl" class="form-control" required)
+                        label(for="newMarkUrl") URL
 
-                        div(class="md-form")
-                            input(type="text" id="newMarkName" class="form-control")
-                            label(for="newMarkName") Name
+                    div(class="md-form")
+                        input(type="text" id="newMarkName" class="form-control")
+                        label(for="newMarkName") Name
 
-                        div(class="chips chips-placeholder")
+                    div(class="chips chips-placeholder")
 
-                    div(class="modal-footer d-flex justify-content-center")
-                        button(type="submit" class="btn btn-indigo" onclick="addMark()") Save
+                div(class="modal-footer d-flex justify-content-center")
+                    button(class="btn btn-indigo" onclick="addMark()") Save
 
     div(class="fixed-action-btn" style="bottom: 45px; right: 24px;")
         a(class="btn-floating btn-lg red" onclick="toggleAddMarkModal()")
@@ -78,5 +77,5 @@ block append js
                 tags
             }
 
-            console.log(bookmark)
+            $.post("/marks", { bookmark })
         }
