@@ -50,7 +50,7 @@ marks.post('/', (req, res) => {
         token: req.session.token, 
         url: bookmark['url'],
         name: bookmark['name'],
-        tags: bookmark['tags']
+        tags: bookmark['tags[]']
     })
     .then(function (result) {
         if (result.data['status'] !== 'success') {
@@ -59,11 +59,11 @@ marks.post('/', (req, res) => {
         }
 
         req.flash('success', 'Added bookmark')
-        return res.redirect('/')
+        return res.redirect('/marks')
     })
     .catch(function (error) {
         req.flash('error', error)
-        return res.redirect('/')
+        return res.redirect('/marks')
     })
 
     return res.redirect('/marks')
