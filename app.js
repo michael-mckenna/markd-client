@@ -35,7 +35,7 @@ app.use('/', login)
 app.use('/', signup)
 app.use('/marks', marks)
 
-app.route('/', (req, res) => {
+app.get('/', (req, res) => {
   return res.redirect('/marks')
 })
 
