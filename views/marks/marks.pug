@@ -10,7 +10,12 @@ block append content
                 div(class="col-sm-4")
                     div(class="card card-cascade narrower text-center")
                         div(class="right")
-                            a(class="close" onclick='deleteMark(' + bookmark.id + ')' style="padding: 10px") ×
+                            a(class="close" onclick='deleteMark(' + bookmark.id + ')' style="padding: 6px 10px")
+                                i(class="fa fa-times" aria-hidden="true" style="font-size: 75%")
+
+                            a(class="close" style="padding: 6px")
+                                i(class="fa fa-pencil" aria-hidden="true" style="font-size: 75%")
+
                         div(class="center")
                             h4(class="card-title" style="font-weight: 100")= bookmark.name
                             p(class="card-text")
@@ -22,6 +27,8 @@ block append content
                             each tag in bookmark.tags
                                 span(class="badge badge-pill indigo")
                                     a(href="#")= tag
+                            else
+                                br
     else
         h3(class="text-center") No Bookmarks Found :(
 
@@ -74,10 +81,10 @@ block append js
                 tags.push(chipData[i].tag)
             }
 
-            tags.push('boundary')
-            tags.push('header')
+            tags.push('$_$_$')
+            tags.push('$_$_$')
 
-            console.log('Sending: ', url, name, tags)
+            alert('Sending: ', url, name, tags)
 
             $.post("/marks", {
                 url: url,
