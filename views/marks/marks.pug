@@ -10,8 +10,7 @@ block append content
                 div(class="col-sm-4")
                     div(class="card card-cascade narrower text-center")
                         div(class="right")
-                            - var id = bookmark.id
-                            a(class="close" onclick="deleteMark(id)" style="padding: 10px") ×
+                            a(class="close" onclick='deleteMark(' + bookmark.id + ')' style="padding: 10px") ×
                         div(class="center")
                             h4(class="card-title" style="font-weight: 100")= bookmark.name
                             p(class="card-text")
