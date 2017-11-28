@@ -68,12 +68,14 @@ login.get('/logout', (req, res, next) => {
         if (err) {
           return next(err)
         } else {
-          return res.send('successfully logged out')
+          req.flash('success', 'Successfully logged out')
+          return res.redirect('/login')
         }
       })
     })
     .catch(function (error) {
-      return res.send('could not log out')
+      req.flash('error', 'Unable to log out.')
+      return res.redirect('/login')
     })
   }
 })

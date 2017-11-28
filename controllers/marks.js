@@ -57,7 +57,7 @@ marks.post('/', (req, res) => {
         .then(function (result) {
             if (result.data['status'] !== 'success') {
                 req.flash('error', result.data['message'])
-                return res.redirect('/')
+                return res.redirect('/marks')
             }   
 
             req.flash('success', 'Added bookmark')
@@ -78,7 +78,7 @@ marks.post('/', (req, res) => {
         .then(function (result) {
             if (result.data['status'] !== 'success') {
                 req.flash('error', result.data['message'])
-                return res.redirect('/')
+                return res.redirect('/marks')
             }   
 
             req.flash('success', 'Deleted bookmark')

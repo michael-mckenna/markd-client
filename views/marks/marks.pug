@@ -13,7 +13,7 @@ block append content
                             a(class="close" onclick='deleteMark(' + bookmark.id + ')' style="padding: 6px 10px")
                                 i(class="fa fa-times" aria-hidden="true" style="font-size: 75%")
 
-                            a(class="close" style="padding: 6px")
+                            a(class="close" onclick='editMark(' + bookmark.id + ')' style="padding: 6px")
                                 i(class="fa fa-pencil" aria-hidden="true" style="font-size: 75%")
 
                         div(class="center")
@@ -24,9 +24,9 @@ block append content
                                 img(src="//" + bookmark.url + "/favicon.ico" width="30px" height="30px")
                             
                         div(class="card-body")
-                            each tag in bookmark.tags
-                                span(class="badge badge-pill indigo")
-                                    a(href="#")= tag
+                                each tag in bookmark.tags
+                                    span(class="badge badge-pill indigo")
+                                        a(href="#")= tag
                             else
                                 br
     else
@@ -68,7 +68,7 @@ block append js
             secondaryPlaceholder: '+Tag',
         })
 
-        var addMark = function() {
+        var addMark = function () {
             var url = document.getElementById('newMarkUrl').value
             var name = document.getElementById('newMarkName').value
 
@@ -97,11 +97,15 @@ block append js
             document.location.href = '/marks'
         }
 
-        var deleteMark = function(id){
+        var deleteMark = function (id) {
             $.post("/marks", {
                 id: id,
                 op: "delete"
             })
 
             document.location.href = '/marks'
+        }
+
+        var editMark = function (id) {
+            // TODO: jenna do this
         }

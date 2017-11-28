@@ -6,8 +6,7 @@ const fs = require('fs')
   , bodyParser = require('body-parser')
 
 // import routes
-const { home } = require('./controllers/home')
-  , { login } = require('./controllers/login')
+const { login } = require('./controllers/login')
   , { signup } = require('./controllers/signup')
   , { marks } = require('./controllers/marks')
 
@@ -32,10 +31,13 @@ app.use(session(config.session))
 app.use(require('flash')())
 
 // register routes
-app.use('/', home)
 app.use('/', login)
 app.use('/', signup)
 app.use('/marks', marks)
+
+app.route('/', (req, res) => {
+  return res.redirect('/marks')
+})
 
 // run server
 app.set('port', config.port)
