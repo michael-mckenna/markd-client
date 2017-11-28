@@ -20,7 +20,14 @@ marks.get('/', (req, res) => {
         token: req.session.token
     })
     .then(function (result) {
-        console.log(JSON.stringify(result, undefined, 2))
+        if (result.data['status'] !== 'success') {
+            req.flash('error', result.data['message'])
+            return res.redirect('/')
+        }
+
+        return res.render('marks/marks', {
+            bookmarks: result.data['bookmarks']
+        })
     })
     .catch(function (error) {
         return console.log(error)
