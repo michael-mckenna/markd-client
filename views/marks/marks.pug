@@ -105,5 +105,8 @@ block append js
         }
 
         var editMark = function (id) {
-            // TODO: jenna do this
+            $.post("/marks", {
+                id: id,
+                op: "edit"
+            })
         }
