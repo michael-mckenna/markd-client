@@ -8,6 +8,18 @@ block append content
     h1(class="text-center" style="font-weight: 250") My Marks 
     br
 
+    if filter
+        div(class="text-center col-sm-6" style="margin: auto; width: 50%")
+            h3(style="font-weight: 200") Filter(s):
+
+            div(class="chip chip-lg teal lighten-2 white-text")
+                p(class="tag-link" style="font-size: 150%; font-weight: 400")
+                    | #{filter}
+                    | &nbsp;
+
+                    a(href="/marks")
+                        i(class="fa fa-times" href="/marks" aria-hidden="true" style="font-size: 75%")
+
     if bookmarks.length > 0
         div(class="card-deck")
             each bookmark, index in bookmarks
@@ -31,9 +43,8 @@ block append content
                             
                         div(class="card-body")
                             each tag in bookmark.tags
-                                // span(class="badge badge-pill indigo" style="padding-right: 2px")
-                                div(class="chip teal lighten-2 white-text" href="#")
-                                    a(href="#" class="tag-link")= tag
+                                div(class="chip teal lighten-2 white-text" style="margin: auto; margin-right: 2px") 
+                                    a(href="/marks/filter=" + tag class="tag-link")= tag
                             else
                                 br
     else

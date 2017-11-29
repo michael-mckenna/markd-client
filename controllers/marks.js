@@ -36,6 +36,36 @@ marks.get('/', (req, res) => {
 
 
 /**
+ * GET marks/tag
+ */
+marks.get('/filter=:tag', (req, res) => {
+    if (!req.session.token) {
+        req.flash('error', 'Please login to access your bookmarks.')
+        return res.redirect('/login')
+    }
+
+    axios.post(config.serverURL + '/read/tag=' + req.params.tag, {
+        email: req.session.email,
+        token: req.session.token
+    })
+    .then(function (result) {
+        if (result.data['status'] !== 'success') {
+            req.flash('error', result.data['message'])
+            return res.redirect('/')
+        }
+
+        return res.render('marks/marks', {
+            bookmarks: result.data['bookmarks'],
+            filter: req.params.tag
+        })
+    })
+    .catch(function (error) {
+        return console.log(error)
+    })
+}) 
+
+
+/**
  * POST marks
  */
 marks.post('/', (req, res) => {
