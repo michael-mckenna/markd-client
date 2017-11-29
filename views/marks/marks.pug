@@ -1,5 +1,9 @@
 extends ../layout.pug
 
+block append navlinks
+    li(class="nav-item")
+         a(class="nav-link" href="/logout") Logout
+
 block append content
     h1(class="text-center" style="font-weight: 250") My Marks 
     br
