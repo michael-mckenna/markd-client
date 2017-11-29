@@ -24,6 +24,12 @@ login.post('/login', (req, res) => {
     req.flash('error', 'Invalid Input Provided.  Please Try Again.')
     return res.redirect('/login')
   }
+  
+  // handle remember me token
+  remember = req.body.remember
+  if(remember=='on'){
+    req.flash('info', 'Session remembered!')
+  }
 
   axios.post(config.serverURL + '/auth/login', {
     email: req.body.email,
