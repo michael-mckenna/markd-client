@@ -10,7 +10,7 @@ block append content
 
     if filter
         div(class="text-center col-sm-6" style="margin: auto; width: 50%")
-            h3(style="font-weight: 200") Filter(s):
+            h3(style="font-weight: 200") Filter:
 
             div(class="chip chip-lg teal lighten-2 white-text")
                 p(class="tag-link" style="font-size: 150%; font-weight: 400")
@@ -154,8 +154,9 @@ block append js
              })
 
             $('#modalAddMark').modal('hide')
-            location.reload(true)
-            // document.location.href = '/marks'
+
+            window.location.reload()
+            window.location.reload()
         }
 
         var deleteMark = function (id) {
@@ -164,8 +165,8 @@ block append js
                 op: "delete"
             })
 
-            // document.location.href = '/marks'
-            location.reload(true)
+            window.location.reload()
+            window.location.reload()
         }
 
         var editMark = function (id) {
@@ -195,7 +196,6 @@ block append js
             
             $('#modalEditMark').modal('hide')
             
-            // document.location.href = '/marks'
-            location.reload(true)
-            window.location.reload(true)
+            window.location.reload()
+            window.location.reload()
         }
