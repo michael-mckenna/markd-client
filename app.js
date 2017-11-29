@@ -4,6 +4,7 @@ const fs = require('fs')
   , express = require('express')
   , session = require('express-session')
   , bodyParser = require('body-parser')
+  , cookieParser = require('cookie-parser')
 
 // import routes
 const { login } = require('./controllers/login')
@@ -16,6 +17,7 @@ var config = require('./config').setup(process.env.NODE_ENV)
 // initialize app
 var app = express()
 
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'pug')
@@ -24,6 +26,8 @@ app.set('view engine', 'pug')
 app.use('/static', express.static(path.join(__dirname, 'public')))
 
 // middle-ware
+app.use(cookieParser())
+// app.use(cookieSession({ secret: 'secret', cookie: { maxAge: 60 * 60 * 1000 } }))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
@@ -41,6 +45,7 @@ app.get('/', (req, res) => {
 
 // run server
 app.set('port', config.port)
+
 
 var server = app.listen(app.get('port'), () => {
   console.log('Markd is up on port ' + config.port)
