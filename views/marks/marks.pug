@@ -152,11 +152,11 @@ block append js
                 tags: tags,
                 op: "create"
              })
+            .done(function () {
+                $('#modalAddMark').modal('hide')
+                window.location.reload()
+            })
 
-            $('#modalAddMark').modal('hide')
-
-            window.location.reload()
-            window.location.reload()
         }
 
         var deleteMark = function (id) {
@@ -164,9 +164,9 @@ block append js
                 id: id,
                 op: "delete"
             })
-
-            window.location.reload()
-            window.location.reload()
+            .done(function () {
+                window.location.reload()
+            })
         }
 
         var editMark = function (id) {
@@ -191,11 +191,9 @@ block append js
                 tags: tags,
                 op: "edit"
             })
-            
-            currentBookmarkID = 0
-            
-            $('#modalEditMark').modal('hide')
-            
-            window.location.reload()
-            window.location.reload()
+            .done(function () {
+                currentBookmarkID = 0
+                $('#modalEditMark').modal('hide')
+                window.location.reload()
+            })
         }
