@@ -22,7 +22,7 @@ marks.get('/', (req, res) => {
     .then(function (result) {
         if (result.data['status'] !== 'success') {
             req.flash('error', result.data['message'])
-            return res.redirect('/')
+            return res.redirect('/logout')
         }
 
         return res.render('marks/marks', {
@@ -30,7 +30,7 @@ marks.get('/', (req, res) => {
         })
     })
     .catch(function (error) {
-        return console.log(error)
+        return res.redirect('/logout')
     })
 })
 
