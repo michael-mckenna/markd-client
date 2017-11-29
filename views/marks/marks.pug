@@ -9,17 +9,26 @@ block append content
             each bookmark, index in bookmarks
                 div(class="col-sm-4")
                     div(class="card card-cascade narrower text-center")
-                        div(class="card-body")
+                        div(class="right")
+                            a(class="close" onclick='deleteMark(' + bookmark.id + ')' style="padding: 6px 10px")
+                                i(class="fa fa-times" aria-hidden="true" style="font-size: 75%")
+
+                            a(class="close" onclick='editMark(' + bookmark.id + ')' style="padding: 6px")
+                                i(class="fa fa-pencil" aria-hidden="true" style="font-size: 75%")
+
+                        div(class="center")
                             h4(class="card-title" style="font-weight: 100")= bookmark.name
                             p(class="card-text")
 
                             a(href="//" + bookmark.url)
                                 img(src="//" + bookmark.url + "/favicon.ico" width="30px" height="30px")
-
-                            br
+                            
+                        div(class="card-body")
                             each tag in bookmark.tags
                                 span(class="badge badge-pill indigo")
                                     a(href="#")= tag
+                            else
+                                br
     else
         h3(class="text-center") No Bookmarks Found :(
 
@@ -59,7 +68,7 @@ block append js
             secondaryPlaceholder: '+Tag',
         })
 
-        var addMark = function() {
+        var addMark = function () {
             var url = document.getElementById('newMarkUrl').value
             var name = document.getElementById('newMarkName').value
 
@@ -72,17 +81,29 @@ block append js
                 tags.push(chipData[i].tag)
             }
 
-            tags.push('boundary')
-            tags.push('header')
-
-            console.log('Sending: ', url, name, tags)
+            tags.push('$_$_$')
+            tags.push('$_$_$')
 
             $.post("/marks", {
                 url: url,
                 name: name,
-                tags: tags
+                tags: tags,
+                op: "create"
              })
 
             $('#modalAddMark').modal('hide')
             document.location.href = '/marks'
+        }
+
+        var deleteMark = function (id) {
+            $.post("/marks", {
+                id: id,
+                op: "delete"
+            })
+
+            document.location.href = '/marks'
+        }
+
+        var editMark = function (id) {
+            // TODO: jenna do this
         }

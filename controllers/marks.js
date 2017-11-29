@@ -45,26 +45,50 @@ marks.post('/', (req, res) => {
     }
 
     bookmark = req.body
-    axios.post(config.serverURL + "/create", {
-        email: req.session.email, 
-        token: req.session.token, 
-        url: bookmark['url'],
-        name: bookmark['name'],
-        tags: bookmark['tags[]']
-    })
-    .then(function (result) {
-        if (result.data['status'] !== 'success') {
-            req.flash('error', result.data['message'])
-            return res.redirect('/')
-        }
+    
+    if (bookmark['op'] === "create"){
+        axios.post(config.serverURL + "/create", {
+            email: req.session.email, 
+            token: req.session.token, 
+            url: bookmark['url'],
+            name: bookmark['name'],
+            tags: bookmark['tags[]']
+        })
+        .then(function (result) {
+            if (result.data['status'] !== 'success') {
+                req.flash('error', result.data['message'])
+                return res.redirect('/marks')
+            }   
 
-        req.flash('success', 'Added bookmark')
-        return res.redirect('/marks')
-    })
-    .catch(function (error) {
-        req.flash('error', error)
-        return res.redirect('/marks')
-    })
+            req.flash('success', 'Added bookmark')
+            return res.redirect('/marks')
+        })
+        .catch(function (error) {
+            req.flash('error', error)
+            return res.redirect('/marks')
+        })
+    }
+    
+    if (bookmark['op'] === "delete"){
+        axios.post(config.serverURL + "/delete", {
+          email: req.session.email,
+          token: req.session.token,
+          id: bookmark['id']
+        })
+        .then(function (result) {
+            if (result.data['status'] !== 'success') {
+                req.flash('error', result.data['message'])
+                return res.redirect('/marks')
+            }   
+
+            req.flash('success', 'Deleted bookmark')
+            return res.redirect('/marks')
+        })
+        .catch(function (error) {
+            req.flash('error', error)
+            return res.redirect('/marks')
+        })
+    }
 
     return res.redirect('/marks')
 })
