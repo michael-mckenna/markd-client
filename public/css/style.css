@@ -2,6 +2,12 @@ span a {
     color: #EEE;
 }
 
-.badge-pill {
-    padding: 1px;
+.chip {
+  padding-left: 10px;
 }
+
+.tag-link {
+  color: #FFF;
+  text-decoration: none;
+}
+
