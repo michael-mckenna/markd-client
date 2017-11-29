@@ -100,6 +100,9 @@ block append js
             document.getElementById('editMarkName').value = name
 
             // populate chips
+            if (tags === "")
+                $('.chips-initial').material_chip({ data: [] })
+
             var chips = []
             tags = tags.split('$_$_$')
             for (var i = 0; i < tags.length; i++) {
@@ -107,11 +110,8 @@ block append js
                     tag: tags[i]
                 })
             }
-            
-            console.log(JSON.stringify({ data: chips }, undefined, 2))
 
             $('.chips-initial').material_chip({ data: chips })
-            
         }
 
         $('.chips-placeholder').material_chip({
