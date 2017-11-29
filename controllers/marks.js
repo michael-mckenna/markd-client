@@ -45,6 +45,7 @@ marks.post('/', (req, res) => {
     }
 
     bookmark = req.body
+    console.log(JSON.stringify(bookmark, undefined, 4))
     
     if (bookmark['op'] === "create"){
         axios.post(config.serverURL + "/create", {
@@ -82,6 +83,30 @@ marks.post('/', (req, res) => {
             }   
 
             req.flash('success', 'Deleted bookmark')
+            return res.redirect('/marks')
+        })
+        .catch(function (error) {
+            req.flash('error', error)
+            return res.redirect('/marks')
+        })
+    }
+
+    if (bookmark['op'] === "edit"){
+        axios.post(config.serverURL + "/update", {
+            email: req.session.email,
+            token: req.session.token,
+            id: bookmark['id'],
+            url: bookmark['url'],
+            name: bookmark['name'],
+            tags: bookmark['tags[]']
+        })
+        .then(function (result) {
+            if (result.data['status'] !== 'success') {
+                req.flash('error', result.data['message'])
+                return res.redirect('/marks')
+            }   
+
+            req.flash('success', 'Updated bookmark')
             return res.redirect('/marks')
         })
         .catch(function (error) {

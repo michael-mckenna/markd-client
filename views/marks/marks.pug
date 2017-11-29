@@ -1,5 +1,9 @@
 extends ../layout.pug
 
+block append navlinks
+    li(class="nav-item")
+         a(class="nav-link" href="/logout") Logout
+
 block append content
     h1(class="text-center" style="font-weight: 250") My Marks 
     br
@@ -13,7 +17,9 @@ block append content
                             a(class="close" onclick='deleteMark(' + bookmark.id + ')' style="padding: 6px 10px")
                                 i(class="fa fa-times" aria-hidden="true" style="font-size: 75%")
 
-                            a(class="close" onclick='editMark(' + bookmark.id + ')' style="padding: 6px")
+                            - var tagString= bookmark.tags.join('$_$_$')
+                            a(class="close" onclick='toggleEditMarkModal(' + bookmark.id + ', "' + bookmark.url + '", "' 
+                              + bookmark.name + '", "' + tagString + '")' style="padding: 6px")
                                 i(class="fa fa-pencil" aria-hidden="true" style="font-size: 75%")
 
                         div(class="center")
@@ -25,8 +31,9 @@ block append content
                             
                         div(class="card-body")
                             each tag in bookmark.tags
-                                span(class="badge badge-pill indigo")
-                                    a(href="#")= tag
+                                // span(class="badge badge-pill indigo" style="padding-right: 2px")
+                                div(class="chip teal lighten-2 white-text" href="#")
+                                    a(href="#" class="tag-link")= tag
                             else
                                 br
     else
@@ -53,14 +60,58 @@ block append content
                 div(class="modal-footer d-flex justify-content-center")
                     button(class="btn btn-indigo" onclick="addMark()") Save
 
+    div(class="modal fade" id="modalEditMark" tabindex="-1" role="dialog" aria-hidden="true")
+        div(class="modal-dialog" role="document")
+            div(class="modal-content")
+                div(div class="modal-header text-center")
+                    h4(class="modal-title w-100 font-bold" style="font-weight: 300") Edit Bookmark
+
+                div(class="modal-body mx-3")
+                    div(class="md-form")
+                        input(type="text" id="editMarkUrl" class="form-control" required)
+
+                    div(class="md-form")
+                        input(type="text" id="editMarkName" class="form-control")
+
+                    div(class="chips chips-initial")
+
+                div(class="modal-footer d-flex justify-content-center")
+                    button(class="btn btn-indigo" onclick="editMark()") Save
+
+
     div(class="fixed-action-btn" style="bottom: 45px; right: 24px;")
         a(class="btn-floating btn-lg red" onclick="toggleAddMarkModal()")
             i(class="fa fa-plus")
 
 block append js
     script.
+        var currentBookmarkId = 0;
+
         var toggleAddMarkModal = function() {
             $('#modalAddMark').modal()
+        }
+        
+        var toggleEditMarkModal = function(id, url, name, tags){
+            $('#modalEditMark').modal()
+            currentBookmarkId = id;
+
+            // prepopulate stuff here
+            document.getElementById('editMarkUrl').value = url
+            document.getElementById('editMarkName').value = name
+
+            // populate chips
+            var chips = []
+            tags = tags.split('$_$_$')
+            for (var i = 0; i < tags.length; i++) {
+                chips.push({
+                    tag: tags[i]
+                })
+            }
+            
+            console.log(JSON.stringify({ data: chips }, undefined, 2))
+
+            $('.chips-initial').material_chip({ data: chips })
+            
         }
 
         $('.chips-placeholder').material_chip({
@@ -105,5 +156,31 @@ block append js
         }
 
         var editMark = function (id) {
-            // TODO: jenna do this
+            var url = document.getElementById('editMarkUrl').value
+            var name = document.getElementById('editMarkName').value
+
+            if (name === "") name = url
+
+            var chipData = $('.chips-initial').material_chip('data')
+
+            var tags = []
+            for (var i = 0; i < chipData.length; i++) {
+                tags.push(chipData[i].tag)
+            }
+
+            tags.push('$_$_$')
+            tags.push('$_$_$')
+            $.post("/marks", {
+                id: currentBookmarkId,
+                url: url,
+                name: name,
+                tags: tags,
+                op: "edit"
+            })
+            
+            currentBookmarkID = 0
+            
+            $('#modalEditMark').modal('hide')
+            
+            document.location.href = '/marks'
         }
